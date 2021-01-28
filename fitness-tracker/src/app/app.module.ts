@@ -17,6 +17,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import {StopTrainingComponent} from "./training/current-training/stop-training.component";
+import {AuthService} from "./auth/Auth.service";
 
 @NgModule({
   declarations: [
@@ -41,8 +42,9 @@ import {StopTrainingComponent} from "./training/current-training/stop-training.c
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent],
+  //This component doesn't have a route, but it tells NG hey be prepared to use it.
   entryComponents: [StopTrainingComponent]
 })
 export class AppModule { }
