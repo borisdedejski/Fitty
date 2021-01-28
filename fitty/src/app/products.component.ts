@@ -9,7 +9,6 @@ export class ProductsComponent {
     isDisabled = true;
     products = ['A Book', 'A Tree'];
 
-
     constructor() {
         setTimeout(() => {
             // this.productName = 'A Tree';
@@ -17,8 +16,10 @@ export class ProductsComponent {
         }, 3000);
     }
 
-    onAddProduct() {
-        this.products.push(this.productName);
+    onAddProduct(form: any) {
+        if(form.valid) {
+            this.products.push(form.value.productName);
+        }
     }
 
     onRemoveProduct(productName: string) {
