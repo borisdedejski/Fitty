@@ -1,10 +1,9 @@
-import {Component, OnInit, EventEmitter, Output, OnDestroy} from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { TrainingService } from "../training.service";
-import {AngularFirestore, QueryDocumentSnapshot} from "@angular/fire/firestore";
+import { AngularFirestore } from "@angular/fire/firestore";
 import { Exercise } from "../exercise.module";
 import { NgForm } from "@angular/forms";
 import { Observable, Subscription } from "rxjs";
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-training',
@@ -17,10 +16,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   exerciseSubscription: Subscription = new Subscription();
   // console = console;
 
-
-  constructor(private trainingService: TrainingService, private db: AngularFirestore) {
-
-  }
+  constructor(private trainingService: TrainingService, private db: AngularFirestore) { }
 
   ngOnInit(): void {
     //Subscribe first to get the,
@@ -34,6 +30,6 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
 
   onStartTraining(form: NgForm) {
     //THis is the name in the NgModel
-    this.trainingService.startExercise(form.value.exercise)
+    this.trainingService.startExercise(form.value.exercise.id);
   }
 }

@@ -12,10 +12,9 @@ export class TrainingService {
     private availableExercises: Exercise[] = [];
     private EMPTY_EXERCISE = { id: '', name: '', duration: 0, calories: 0};
     private runningExercise: Exercise | undefined = this.EMPTY_EXERCISE;
-    private exercises: Exercise[] = [];
+    private exercises: Exercise[] = [this.EMPTY_EXERCISE];
 
-    constructor(private db: AngularFirestore) {
-    }
+    constructor(private db: AngularFirestore) {}
 
     fetchAvailableExercises() {
        this.db
@@ -37,7 +36,7 @@ export class TrainingService {
             });
     }
 
-    startExercise(selectedId: string){
+    startExercise(selectedId: any){
         this.runningExercise = this.availableExercises.find(ex => ex.id === selectedId);
         if(this.runningExercise) {
             this.exerciseChanged.next({...this.runningExercise});
@@ -46,7 +45,7 @@ export class TrainingService {
 
     completeExercise() {
         if (this.runningExercise) {
-            this.exercises.push({...this.runningExercise, date: new Date(), state: 'completed'});
+            this.addDataToDatabase({...this.runningExercise, date: new Date(), state: 'completed'});
         }
         this.runningExercise = this.EMPTY_EXERCISE;
         this.exerciseChanged.next();
@@ -54,7 +53,7 @@ export class TrainingService {
 
     cancelExercise(progress: number) {
         if(this.runningExercise){
-            this.exercises.push({
+            this.addDataToDatabase({
                 ...this.runningExercise,
                 duration: this.runningExercise.duration * (progress / 100),
                 calories: this.runningExercise.calories * (progress / 100),
@@ -66,7 +65,6 @@ export class TrainingService {
         this.exerciseChanged.next();
     }
 
-
     getRunningExercise() {
         return { ...this.runningExercise };
     }
@@ -74,4 +72,12 @@ export class TrainingService {
     getCompletedOrCancelledExercises() {
         return this.exercises.slice();
     }
+
+    private addDataToDatabase(exercise: Exercise) {
+        console.log(exercise)
+        this.db
+            .collection('finishedExercises')
+            .add(exercise);
+    }
+
 }
