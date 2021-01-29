@@ -5,12 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
-import { SignupComponent } from './auth/signup/signup.component';
-import { LoginComponent } from './auth/login/login.component';
-import { TrainingComponent } from './training/training.component';
-import { CurrentTrainingComponent } from './training/current-training/current-training.component';
-import { NewTrainingComponent } from './training/new-training/new-training.component';
-import { PastTrainingComponent } from './training/past-training/past-training.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -25,18 +19,14 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import {environment} from "../environments/environment";
 import {UIService} from "./shared/ui.service";
 import { AuthModule } from "./auth/auth.module";
+import {TrainingModule} from "./training/training.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    TrainingComponent,
-    CurrentTrainingComponent,
-    NewTrainingComponent,
-    PastTrainingComponent,
     WelcomeComponent,
     HeaderComponent,
     SidenavListComponent,
-    StopTrainingComponent
   ],
   imports: [
     BrowserModule,
@@ -49,11 +39,11 @@ import { AuthModule } from "./auth/auth.module";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AuthModule
+    AuthModule,
+    TrainingModule
   ],
   providers: [AuthService, TrainingService, UIService],
   bootstrap: [AppComponent],
   //This component doesn't have a route, but it tells NG hey be prepared to use it.
-  entryComponents: [StopTrainingComponent]
 })
 export class AppModule { }
