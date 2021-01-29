@@ -42,7 +42,6 @@ export class AuthService {
     }
 
     isAuth() {
-        console.log(this.user)
         return this.user != null;
     }
 

@@ -5,17 +5,10 @@
 
     <mat-form-field appearance='fill'>
       <mat-select placeholder=''>
-        <mat-option value=''>
-          Crunches
-        </mat-option>
-        <mat-option value=''>
-          Touch toes
-        </mat-option>
-        <mat-option value=''>
-          Side Lunges
-        </mat-option>
-        <mat-option value=''>
-          Burpees
+        <mat-option *ngFor='let exercise of exercises' [value]="exercise.id">
+          {{ exercise.name }}
+<!--          {{ console.log(exercise) }}?-->
+<!--          When you have console=console in the component-->
         </mat-option>
       </mat-select>
     </mat-form-field>

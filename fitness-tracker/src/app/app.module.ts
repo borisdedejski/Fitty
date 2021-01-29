@@ -18,6 +18,7 @@ import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import {StopTrainingComponent} from "./training/current-training/stop-training.component";
 import {AuthService} from "./auth/Auth.service";
+import {TrainingService} from "./training/training.service";
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import {AuthService} from "./auth/Auth.service";
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, TrainingService],
   bootstrap: [AppComponent],
   //This component doesn't have a route, but it tells NG hey be prepared to use it.
   entryComponents: [StopTrainingComponent]
