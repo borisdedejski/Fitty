@@ -10,16 +10,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
-import {StopTrainingComponent} from "./training/current-training/stop-training.component";
 import {AuthService} from "./auth/auth.service";
 import {TrainingService} from "./training/training.service";
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from "@angular/fire/firestore";
-import { AngularFireAuthModule } from "@angular/fire/auth";
 import {environment} from "../environments/environment";
 import {UIService} from "./shared/ui.service";
 import { AuthModule } from "./auth/auth.module";
-import {TrainingModule} from "./training/training.module";
 
 @NgModule({
   declarations: [
@@ -39,7 +36,6 @@ import {TrainingModule} from "./training/training.module";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AuthModule,
-    TrainingModule
   ],
   providers: [AuthService, TrainingService, UIService],
   bootstrap: [AppComponent],

@@ -10,6 +10,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
+import {TrainingRoutingModule} from "./training-routing.module";
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import {SharedModule} from "../shared/shared.module";
     ],
     imports: [
         SharedModule,
-        AngularFirestoreModule
+        TrainingRoutingModule
     ],
     entryComponents: [StopTrainingComponent]
 })
