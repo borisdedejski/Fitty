@@ -24,12 +24,11 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import {environment} from "../environments/environment";
 import {UIService} from "./shared/ui.service";
+import { AuthModule } from "./auth/auth.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    SignupComponent,
-    LoginComponent,
     TrainingComponent,
     CurrentTrainingComponent,
     NewTrainingComponent,
@@ -49,7 +48,8 @@ import {UIService} from "./shared/ui.service";
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AuthModule
   ],
   providers: [AuthService, TrainingService, UIService],
   bootstrap: [AppComponent],
