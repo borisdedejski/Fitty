@@ -6,6 +6,7 @@
 
     <mat-form-field appearance='fill'>
       <mat-select placeholder='Choose Exercise' ngModel name="exercise" required>
+                                                      <!-- async here infers to auto-subscribe-->
         <mat-option *ngFor='let exercise of exercises | async' [value]="exercise.name">
           {{ exercise.name }}
 <!--          {{ console.log(exercise) }}?-->
