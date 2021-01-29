@@ -23,6 +23,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import {environment} from "../environments/environment";
+import {UIService} from "./shared/ui.service";
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import {environment} from "../environments/environment";
     AngularFirestoreModule,
     AngularFireAuthModule
   ],
-  providers: [AuthService, TrainingService],
+  providers: [AuthService, TrainingService, UIService],
   bootstrap: [AppComponent],
   //This component doesn't have a route, but it tells NG hey be prepared to use it.
   entryComponents: [StopTrainingComponent]

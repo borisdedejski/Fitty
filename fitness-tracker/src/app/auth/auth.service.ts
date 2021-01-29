@@ -5,6 +5,8 @@ import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/auth";
 import {TrainingService} from "../training/training.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {UIService} from "../shared/ui.service";
 
 @Injectable()
 export class AuthService {
@@ -13,8 +15,12 @@ export class AuthService {
 
     private user: User | null | undefined;
 
-    constructor(private router: Router, private afAuth: AngularFireAuth, private trainingService: TrainingService) {
-    }
+    constructor(private router: Router,
+                private afAuth: AngularFireAuth,
+                private trainingService: TrainingService,
+                private snackbar: MatSnackBar,
+                private uiService: UIService) {}
+
 
     initAuthListener() {
         this.afAuth.authState.subscribe(user => {
@@ -33,27 +39,36 @@ export class AuthService {
     }
 
     registerUser(authData: AuthData) {
-        // @ts-ignore
+        this.uiService.loadingStateChanged.next(true);
+
         this.afAuth
             .createUserWithEmailAndPassword(authData.email, authData.password)
             .then((result) => {
-                console.log(result);
+                this.uiService.loadingStateChanged.next(false);
             })
             .catch((error) => {
-                console.log(error)
-            })
+                this.uiService.loadingStateChanged.next(false);
+                this.snackbar.open(error.message, '', {
+                    duration: 3000
+                });
+            });
     }
 
     login(authData: AuthData) {
+        //loading login
+        this.uiService.loadingStateChanged.next(true);
         this.afAuth
             .signInWithEmailAndPassword(authData.email, authData.password)
             .then((result) => {
                 this.authChange.next(true)
+                this.uiService.loadingStateChanged.next(false);
             })
             .catch((error) => {
-                console.log(error)
-            })
-
+                this.uiService.loadingStateChanged.next(false);
+                this.snackbar.open(error.message, '', {
+                    duration: 3000
+                });
+            });
     }
 
     logout() {
@@ -64,7 +79,6 @@ export class AuthService {
         this.isAuthenticated = false;
         this.afAuth.signOut();
     }
-
 
     isAuth() {
         return this.isAuthenticated;
