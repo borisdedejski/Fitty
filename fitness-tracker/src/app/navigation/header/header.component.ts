@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {AuthService} from "../../auth/Auth.service";
+import {AuthService} from "../../auth/auth.service";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
