@@ -1,8 +1,8 @@
 import { Subject } from "rxjs";
-import {Exercise} from "./exercise.module";
+import { Exercise } from "./exercise.module";
 
 export class TrainingService {
-    exerciseChanged = new Subject<Exercise>();
+    exerciseChanged = new Subject<Exercise>() ;
 
     private availableExercises: Exercise[] = [
         { id: 'crunches', name: 'Crunches', duration: 30, calories: 8},
@@ -10,7 +10,9 @@ export class TrainingService {
         { id: 'side-lunges', name: 'Side Lunges', duration: 120, calories: 18},
         { id: 'burpees', name: 'Burpees', duration: 60, calories: 8},
     ];
-    private runningExercise: Exercise | undefined;
+    private EMPTY_EXERCISE = { id: '', name: '', duration: 0, calories: 0};
+    private runningExercise: Exercise | undefined = this.EMPTY_EXERCISE;
+    private exercises: Exercise[] = [];
 
     getAvailableExercises() {
         //Copy of the array
@@ -18,13 +20,36 @@ export class TrainingService {
     }
 
     startExercise(selectedId: string){
-        this.runningExercise = this.availableExercises.find(ex => ex.id == selectedId);
+        this.runningExercise = this.availableExercises.find(ex => ex.id === selectedId);
         if(this.runningExercise) {
             this.exerciseChanged.next({...this.runningExercise});
         }
     }
 
+    completeExercise() {
+        if (this.runningExercise) {
+            this.exercises.push({...this.runningExercise, date: new Date(), state: 'completed'});
+        }
+        this.runningExercise = this.EMPTY_EXERCISE;
+        this.exerciseChanged.next();
+    }
+
+    cancelExercise(progress: number) {
+        if(this.runningExercise){
+            this.exercises.push({
+                ...this.runningExercise,
+                duration: this.runningExercise.duration * (progress / 100),
+                calories: this.runningExercise.calories * (progress / 100),
+                date: new Date(),
+                state: 'cancelled'
+            });
+        }
+        this.runningExercise = this.EMPTY_EXERCISE;
+        this.exerciseChanged.next();
+    }
+
+
     getRunningExercise() {
-        return { ...this.runningExercise }
+        return { ...this.runningExercise };
     }
 }
