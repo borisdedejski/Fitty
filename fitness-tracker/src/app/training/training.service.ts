@@ -1,24 +1,27 @@
-import { Subject } from "rxjs";
-import { Exercise } from "./exercise.module";
+import {Subject} from "rxjs";
+import {Exercise} from "./exercise.module";
 import {map} from "rxjs/operators";
-import { Injectable } from "@angular/core";
+import {Injectable} from "@angular/core";
 import {AngularFirestore} from "@angular/fire/firestore";
+import { Subscription } from "rxjs";
 
 @Injectable()
 export class TrainingService {
-    exerciseChanged = new Subject<Exercise>() ;
-    exercisesChanged = new Subject<Exercise[]>() ;
+    exerciseChanged = new Subject<Exercise>();
+    exercisesChanged = new Subject<Exercise[]>();
     finishedExercisesChanged = new Subject<Exercise[]>();
 
     private availableExercises: Exercise[] = [];
-    private EMPTY_EXERCISE = { id: '', name: '', duration: 0, calories: 0};
+    private EMPTY_EXERCISE = {id: '', name: '', duration: 0, calories: 0};
     private runningExercise: Exercise | undefined = this.EMPTY_EXERCISE;
     private exercises: Exercise[] = [this.EMPTY_EXERCISE];
+    private fbSubs: Subscription[] = [];
 
-    constructor(private db: AngularFirestore) {}
+    constructor(private db: AngularFirestore) {
+    }
 
     fetchAvailableExercises() {
-       this.db
+        this.fbSubs.push(this.db
             .collection("availableExercises")
             .snapshotChanges()
             .pipe(map(docArray => {
@@ -34,14 +37,20 @@ export class TrainingService {
             .subscribe((exercises: Exercise[]) => {
                 this.availableExercises = exercises;
                 this.exercisesChanged.next([...this.availableExercises]);
-            });
+            }, error => {
+                console.log(error)
+            }));
     }
 
-    startExercise(selectedId: any){
+    cancelSubscriptions() {
+        this.fbSubs.forEach(sub => sub.unsubscribe());
+    }
+
+    startExercise(selectedId: any) {
         // Ex. select the last document
         // this.db.doc('availableExercises/' + selectedId.id).update({lastSelected: new Date()})
         this.runningExercise = this.availableExercises.find(ex => ex.id === selectedId);
-        if(this.runningExercise) {
+        if (this.runningExercise) {
             this.exerciseChanged.next({...this.runningExercise});
         }
     }
@@ -55,7 +64,7 @@ export class TrainingService {
     }
 
     cancelExercise(progress: number) {
-        if(this.runningExercise){
+        if (this.runningExercise) {
             this.addDataToDatabase({
                 ...this.runningExercise,
                 duration: this.runningExercise.duration * (progress / 100),
@@ -69,7 +78,7 @@ export class TrainingService {
     }
 
     getRunningExercise() {
-        return { ...this.runningExercise };
+        return {...this.runningExercise};
     }
 
     fetchCompletedOrCancelledExercises() {
